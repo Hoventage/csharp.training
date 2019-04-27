@@ -23,11 +23,11 @@ namespace WebAddressbookTests
         private string email2 = "";
         private string email3 = "";
         private string homepage = "";
-        //private string bday = "";
-        //private string bmonth = "";
+        private string bday = "";
+        private string bmonth = "";
         private string byear = "";
-        //private string aday = "";
-        //private string amonth = "";
+        private string aday = "";
+        private string amonth = "";
         private string ayear = "";
         private string address2 = "";
         private string phone2 = "";
@@ -295,6 +295,50 @@ namespace WebAddressbookTests
             set
             {
                 notes = value;
+            }
+        }
+        public string Bday
+        {
+            get
+            {
+                return bday;
+            }
+            set
+            {
+                bday = value;
+            }
+        }
+        public string Aday
+        {
+            get
+            {
+                return aday;
+            }
+            set
+            {
+                aday = value;
+            }
+        }
+        public string Amonth
+        {
+            get
+            {
+                return amonth;
+            }
+            set
+            {
+                amonth = value;
+            }
+        }
+        public string Bmonth
+        {
+            get
+            {
+                return bmonth;
+            }
+            set
+            {
+                bmonth = value;
             }
         }
 
