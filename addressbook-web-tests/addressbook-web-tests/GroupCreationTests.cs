@@ -48,7 +48,7 @@ namespace WebAddressbookTests
             InitGroupCreation();
             GroupData group = new GroupData("aaa");
             group.Header = "sss";
-            group.Footer = "www";
+            //group.Footer = "www";
             FillGroupForm(group);
             SubmitGroupCreation();
             ReturnToGroupsPage();
