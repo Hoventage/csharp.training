@@ -29,15 +29,21 @@ namespace WebAddressbookTests
                 // Ignore errors if unable to close the browser
             }
         }
-
+        public IWebDriver Driver
+        {
+            get
+            {
+                return driver;
+            }
+        }
         public ApplicationManager()
         {
             driver = new FirefoxDriver();
             baseURL = "http://localhost:8080/addressbook";
-            loginHelper = new LoginHelper(driver);
-            navigator = new NavigationHelper(driver, baseURL);
-            groupHelper = new GroupHelper(driver);
-            contactHelper = new ContactHelper(driver);
+            loginHelper = new LoginHelper(this);
+            navigator = new NavigationHelper(this, baseURL);
+            groupHelper = new GroupHelper(this);
+            contactHelper = new ContactHelper(this);
         }
 
         public LoginHelper Auth
@@ -68,5 +74,7 @@ namespace WebAddressbookTests
                 return contactHelper;
             }
         }
+
+        
     }
 }

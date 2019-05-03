@@ -14,10 +14,9 @@ namespace WebAddressbookTests
         [SetUp]
         public void SetupTest()
         {
-            //driver = new FirefoxDriver();
-            //baseURL = "http://localhost:8080/addressbook";
-            //verificationErrors = new StringBuilder();
             app = new ApplicationManager();
+            app.Navigator.GoToHomePage();
+            app.Auth.Login(new AccountData("admin", "secret"));
         }
 
         [TearDown]
