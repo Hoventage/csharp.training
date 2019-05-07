@@ -21,8 +21,7 @@ namespace WebAddressbookTests
         public ContactHelper Modify(int q, ContactData newData)
         {
             manager.Navigator.GoToHomePage();
-            SelectContact(q);
-            InitContactModification();
+            InitContactModification(q);
             FillNewContactFields(newData);
             SubmitContactModification();
             manager.Navigator.GoToHomePage();
@@ -37,13 +36,6 @@ namespace WebAddressbookTests
             manager.Navigator.GoToHomePage();
             return this;
         }
-
-        public ContactHelper SelectContact(int index1)
-        {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index1 + "]")).Click();
-            return this;
-        }
-
         public ContactHelper Create(ContactData contact)
         {
             OpenNewContactPage();
@@ -141,9 +133,15 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper InitContactModification()
+        public ContactHelper InitContactModification(int index)
         {
-            driver.FindElement(By.XPath("//*[@href ='edit.php?id=17']")).Click();
+            driver.FindElement(By.XPath("(//img[@alt='Edit'])[" + index + "]")).Click();
+            return this;
+        }
+
+        public ContactHelper SelectContact(int index1)
+        {
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index1 + "]")).Click();
             return this;
         }
     }
