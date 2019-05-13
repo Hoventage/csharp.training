@@ -18,21 +18,31 @@ namespace WebAddressbookTests
             this.manager = manager;
             this.baseURL = baseURL;
         }
-        public NavigationHelper GoToHomePage()
+        public void GoToHomePage()
         {
+            if (driver.Url == baseURL)
+            {
+                return;
+            }
             driver.Navigate().GoToUrl(baseURL);
-            return this;
         }
-        public NavigationHelper ReturnToHomePage()
+        public void GoToGroupsPage()
         {
-            driver.FindElement(By.Id("content")).Click();
-            return this;
-        }
-        public NavigationHelper GoToGroupsPage()
-        {
+            if (driver.Url == baseURL + "/group.php"
+               && IsElementPresent(By.Name("new")))
+            {
+                return;
+            }
             driver.FindElement(By.LinkText("groups")).Click();
-            return this;
         }
-        
+        public void OpenNewContactPage()
+        {
+            if (driver.Url == baseURL + "/edit.php"
+               && IsElementPresent(By.Name("firstname")))
+            {
+                return;
+            }
+            driver.FindElement(By.LinkText("add new")).Click();
+        }
     }
 }

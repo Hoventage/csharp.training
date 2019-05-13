@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
+using System.Threading;
 
 namespace WebAddressbookTests
 {
@@ -18,7 +19,18 @@ namespace WebAddressbookTests
         protected IWebDriver driver;
         protected string baseURL;
 
-        public void Stop()
+        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
+
+        private ApplicationManager()
+        {
+            driver = new FirefoxDriver();
+            baseURL = "http://localhost:8080/addressbook";
+            loginHelper = new LoginHelper(this);
+            navigator = new NavigationHelper(this, baseURL);
+            groupHelper = new GroupHelper(this);
+            contactHelper = new ContactHelper(this);
+        }
+        ~ApplicationManager()
         {
             try
             {
@@ -36,16 +48,6 @@ namespace WebAddressbookTests
                 return driver;
             }
         }
-        public ApplicationManager()
-        {
-            driver = new FirefoxDriver();
-            baseURL = "http://localhost:8080/addressbook";
-            loginHelper = new LoginHelper(this);
-            navigator = new NavigationHelper(this, baseURL);
-            groupHelper = new GroupHelper(this);
-            contactHelper = new ContactHelper(this);
-        }
-
         public LoginHelper Auth
         {
             get
@@ -74,7 +76,15 @@ namespace WebAddressbookTests
                 return contactHelper;
             }
         }
-
-        
+        public static ApplicationManager GetInstance()
+        {
+            if (! app.IsValueCreated)
+            {
+                ApplicationManager newInstance = new ApplicationManager();
+                newInstance.Navigator.GoToHomePage();
+                app.Value = newInstance;
+            }
+            return app.Value;
+        }
     }
 }

@@ -10,17 +10,22 @@ using OpenQA.Selenium.Support.UI;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupModificationTests : TestBase
+    public class GroupModificationTests : AuthTestBase
     {
         [Test]
         public void GroupModificationTest()
         {
-            GroupData newData = new GroupData("zzz");
-            newData.Header = "www";
-            newData.Footer = "nnn";
+            // Preparation
+            app.Navigator.GoToGroupsPage();
+            
+            // Actions
+            GroupData newData = new GroupData("qwerty7");
+            newData.Header = null;
+            newData.Footer = null;
+            app.Groups.CreateBeforeModifyIfNeeded(1, newData);
 
-            app.Groups.Modify(1, newData);
-            //app.Auth.Logout();
+            // Verification
+            
         }
     }
 }

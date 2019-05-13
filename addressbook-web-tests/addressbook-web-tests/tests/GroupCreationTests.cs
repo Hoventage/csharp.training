@@ -10,27 +10,25 @@ using OpenQA.Selenium.Support.UI;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupCreationTests : TestBase
+    public class GroupCreationTests : AuthTestBase
     {
         [Test]
         public void GroupCreationTest()
         {
             GroupData group = new GroupData("aaa");
-            group.Header = "sss";
-            group.Footer = "www";
+            group.Header = null;
+            group.Footer = null;
             
             app.Groups.Create(group);
-            //app.Auth.Logout();
         }
         [Test]
         public void EmptyGroupCreationTest()
         {
             GroupData group = new GroupData("");
-            group.Header = "";
-            group.Footer = "";
+            group.Header = null;
+            group.Footer = null;
             
             app.Groups.Create(group);
-            //app.Auth.Logout();
         }
     }
 }

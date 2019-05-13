@@ -10,13 +10,19 @@ using OpenQA.Selenium.Support.UI;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupRemovalTests : TestBase
+    public class GroupRemovalTests : AuthTestBase
     {
         [Test]
         public void GroupRemovalTest()
         {
-            app.Groups.Remove(1);
-            //app.Auth.Logout();
+            // Preparation
+            app.Navigator.GoToGroupsPage();
+
+            // Action
+            app.Groups.CreateBeforeRemoveIfNeeded(5);
+
+            // Verification
+            
         }
     }
 }

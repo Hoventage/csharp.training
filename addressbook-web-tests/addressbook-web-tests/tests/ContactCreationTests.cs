@@ -10,23 +10,21 @@ using OpenQA.Selenium.Support.UI;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactCreationTests : TestBase
+    public class ContactCreationTests : AuthTestBase
     {
         [Test]
         public void ContactCreationTest()
         {
             ContactData contact = new ContactData("name");
-            contact.Lastname = "surname";
+            contact.Lastname = null;
             app.Contacts.Create(contact);
-            //app.Auth.Logout();
         }
         [Test]
         public void EmptyContactCreationTest()
         {
             ContactData contact = new ContactData("");
-            contact.Lastname = "";
+            contact.Lastname = null;
             app.Contacts.Create(contact);
-            //app.Auth.Logout();
         }
     }
 }
