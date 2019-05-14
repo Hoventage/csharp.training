@@ -26,10 +26,9 @@ namespace WebAddressbookTests
         [Test]
         public void LoginWithInvalidCredentials()
         {
-            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
             // preparation
             app.Auth.Logout();
-            
+
             // Action
             AccountData account = new AccountData("admin", "123456");
             app.Auth.Login(account);

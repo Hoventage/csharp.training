@@ -14,24 +14,17 @@ namespace WebAddressbookTests
         public void ContactModificationTest()
         {
             // Preparation
+            ContactData contact = new ContactData("qwerty7");
             app.Navigator.GoToHomePage();
-            ContactData newData = new ContactData("FirstLine");
-            newData.Lastname = "LastLine";
+            app.Contacts.CreateIfNeeded(contact);
 
             // Actions
-            if (app.Contacts.CurrentContactExist(1))
-            {
-                app.Contacts.Modify(1, newData);
-            }
-            else
-            {
-                ContactData data = new ContactData("qwerty7");
-                app.Contacts.Create(data);
-                app.Contacts.Modify(1, newData);
-            }
+            ContactData newData = new ContactData("FirstLine");
+            newData.Lastname = "LastLine";
+            app.Contacts.Modify(1, newData);
 
             // Verification
-
+            app.Contacts.AssertContactFields(1, newData);
         }
     }
 }

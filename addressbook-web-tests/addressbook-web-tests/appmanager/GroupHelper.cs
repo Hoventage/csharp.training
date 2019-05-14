@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
@@ -94,14 +95,20 @@ namespace WebAddressbookTests
             }
         }
         
-        public bool AssertFields(GroupData group)
+        public bool AssertGroupFields(GroupData group)
         {
-            return driver.FindElement(By.Name("group_name")).Text
+            return driver.FindElement(By.Name("group_name")).GetAttribute("value")
                    == group.Name
-                && driver.FindElement(By.Name("group_header")).Text
+                && driver.FindElement(By.Name("group_header")).GetAttribute("value")
                    == group.Header
-                && driver.FindElement(By.Name("group_footer")).Text
+                && driver.FindElement(By.Name("group_footer")).GetAttribute("value")
                    == group.Footer;
+        }
+        public void AssertGroupFields(int index, GroupData group)
+        {
+            SelectGroup(index);
+            InitGroupModification();
+            Assert.IsTrue(AssertGroupFields(group));
         }
 
         //public void CheckAndCreateBeforeAction(int index)

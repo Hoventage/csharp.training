@@ -27,7 +27,7 @@ namespace WebAddressbookTests
             app.Groups.Modify(1, newData);
 
             // Verification
-
+            app.Groups.AssertGroupFields(1, newData);
         }
     }
 }

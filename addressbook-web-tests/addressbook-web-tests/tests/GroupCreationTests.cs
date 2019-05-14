@@ -21,14 +21,14 @@ namespace WebAddressbookTests
             
             app.Groups.Create(group);
         }
-        [Test]
-        public void EmptyGroupCreationTest()
-        {
-            GroupData group = new GroupData("");
-            group.Header = null;
-            group.Footer = null;
+        //[Test]
+        //public void EmptyGroupCreationTest()
+        //{
+        //    GroupData group = new GroupData("");
+        //    group.Header = null;
+        //    group.Footer = null;
             
-            app.Groups.Create(group);
-        }
+        //    app.Groups.Create(group);
+        //}
     }
 }

@@ -19,12 +19,12 @@ namespace WebAddressbookTests
             contact.Lastname = null;
             app.Contacts.Create(contact);
         }
-        [Test]
-        public void EmptyContactCreationTest()
-        {
-            ContactData contact = new ContactData("");
-            contact.Lastname = null;
-            app.Contacts.Create(contact);
-        }
+        //[Test]
+        //public void EmptyContactCreationTest()
+        //{
+        //    ContactData contact = new ContactData("");
+        //    contact.Lastname = null;
+        //    app.Contacts.Create(contact);
+        //}
     }
 }

@@ -146,6 +146,17 @@ namespace WebAddressbookTests
             }
         }
 
+        public bool AssertContactFields(ContactData contact)
+        {
+            return driver.FindElement(By.Name("firstname")).GetAttribute("value") == contact.Firstname
+                && driver.FindElement(By.Name("lastname")).GetAttribute("value") == contact.Lastname;
+        }
+        public void AssertContactFields(int index, ContactData contact)
+        {
+            InitContactModification(index);
+            Assert.IsTrue(AssertContactFields(contact));
+        }
+
         //public void CheckAndCreateBeforeAction(int index)
         //{
         //    if(!CurrentContactExist(index))
