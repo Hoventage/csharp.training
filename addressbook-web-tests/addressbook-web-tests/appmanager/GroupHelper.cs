@@ -23,28 +23,6 @@ namespace WebAddressbookTests
             manager.Navigator.GoToGroupsPage();
             return this;
         }
-        public void CreateBeforeRemoveIfNeeded(int p)
-        {
-            if (CurrentGroupExist(1))
-            {
-                if (CurrentGroupExist(p))
-                {
-                    Remove(p);
-                }
-                else
-                {
-                    //GroupData group = new GroupData("test");
-                    //Create(group);
-                    Remove(1);
-                }
-            }
-            else
-            {
-                GroupData group = new GroupData("test");
-                Create(group);
-                Remove(1);
-            }
-        }
         public GroupHelper Modify(int p, GroupData newData)
         {
             manager.Navigator.GoToGroupsPage();
@@ -54,28 +32,6 @@ namespace WebAddressbookTests
             SubmitGroupModification();
             manager.Navigator.GoToGroupsPage();
             return this;
-        }
-        public void CreateBeforeModifyIfNeeded(int p, GroupData newData)
-        {
-            if (CurrentGroupExist(1))
-            {
-                if (CurrentGroupExist(p))
-                {
-                    Modify(p, newData);
-                }
-                else
-                {
-                    //GroupData group = new GroupData("Zapf");
-                    //Create(group);
-                    Modify(1, newData);
-                }
-            }
-            else
-            {
-                GroupData group = new GroupData("Zapf");
-                Create(group);
-                Modify(1, newData);
-            }
         }
         public GroupHelper Create(GroupData group)
         {
@@ -130,6 +86,23 @@ namespace WebAddressbookTests
         {
             return IsElementPresent(By.XPath("(//input[@name='selected[]'])[" + index + "]"));
         }
+        public void CreateIfNeeded(GroupData group)
+        {
+            if (!CurrentGroupExist(1))
+            {
+                Create(group);
+            }
+        }
+        
+        public bool AssertFields(GroupData group)
+        {
+            return driver.FindElement(By.Name("group_name")).Text
+                   == group.Name
+                && driver.FindElement(By.Name("group_header")).Text
+                   == group.Header
+                && driver.FindElement(By.Name("group_footer")).Text
+                   == group.Footer;
+        }
 
         //public void CheckAndCreateBeforeAction(int index)
         //{
@@ -140,15 +113,6 @@ namespace WebAddressbookTests
         //            GroupData group = new GroupData("abc");
         //            Create(group);
         //         }
-        //    }
-        //}
-
-        //public void CheckExistAndCreate(int p)
-        //{
-        //    if (!CurrentGroupExist(p))
-        //    {
-        //        GroupData group = new GroupData("Little");
-        //        Create(group);
         //    }
         //}
     }

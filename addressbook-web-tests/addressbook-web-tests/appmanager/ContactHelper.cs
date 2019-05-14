@@ -26,28 +26,6 @@ namespace WebAddressbookTests
             manager.Navigator.GoToHomePage();
             return this;
         }
-        public void CreateBeforeModifyIfNeeded(int q, ContactData newData)
-        {
-            if (CurrentContactExist(1))
-            {
-                if (CurrentContactExist(q))
-                {
-                    Modify(q, newData);
-                }
-                else
-                {
-                    //ContactData contact = new ContactData("Zapp");
-                    //Create(contact);
-                    Modify(1, newData);
-                }
-            }
-            else
-            {
-                ContactData contact = new ContactData("Zapp");
-                Create(contact);
-                Modify(1, newData);
-            }
-        }
         public ContactHelper Remove(int q)
         {
             manager.Navigator.GoToHomePage();
@@ -56,28 +34,6 @@ namespace WebAddressbookTests
             SumbitContactRemove();
             manager.Navigator.GoToHomePage();
             return this;
-        }
-        public void CreateBeforeRemoveIfNeeded(int p)
-        {
-            if (CurrentContactExist(1))
-            {
-                if (CurrentContactExist(p))
-                {
-                    Remove(p);
-                }
-                else
-                {
-                    //ContactData contact = new ContactData("Little");
-                    //Create(contact);
-                    Remove(1);
-                }
-            }
-            else
-            {
-                ContactData contact = new ContactData("Little");
-                Create(contact);
-                Remove(1);
-            }
         }
         public ContactHelper Create(ContactData contact)
         {
@@ -182,6 +138,13 @@ namespace WebAddressbookTests
         {
             return IsElementPresent(By.XPath("(//input[@name='selected[]'])[" + index1 + "]"));
         }
+        public void CreateIfNeeded(ContactData contact)
+        {
+            if (!CurrentContactExist(1))
+            {
+                Create(contact);
+            }
+        }
 
         //public void CheckAndCreateBeforeAction(int index)
         //{
@@ -192,15 +155,6 @@ namespace WebAddressbookTests
         //            ContactData contact = new ContactData("abc");
         //            Create(contact);
         //         }
-        //    }
-        //}
-
-        //public void CheckExistAndCreate(int p)
-        //{
-        //    if (!CurrentContactExist(p))
-        //    {
-        //        ContactData contact = new ContactData("Little");
-        //        Create(contact);
         //    }
         //}
     }

@@ -16,16 +16,18 @@ namespace WebAddressbookTests
         public void GroupModificationTest()
         {
             // Preparation
+            GroupData data = new GroupData("123456");
             app.Navigator.GoToGroupsPage();
-            
-            // Actions
+            app.Groups.CreateIfNeeded(data);
+
+            // Action
             GroupData newData = new GroupData("qwerty7");
-            newData.Header = null;
-            newData.Footer = null;
-            app.Groups.CreateBeforeModifyIfNeeded(1, newData);
+            newData.Header = "Header";
+            newData.Footer = "Footer";
+            app.Groups.Modify(1, newData);
 
             // Verification
-            
+
         }
     }
 }

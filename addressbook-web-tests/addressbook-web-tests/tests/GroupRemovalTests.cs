@@ -16,13 +16,15 @@ namespace WebAddressbookTests
         public void GroupRemovalTest()
         {
             // Preparation
+            GroupData data = new GroupData("123456");
             app.Navigator.GoToGroupsPage();
+            app.Groups.CreateIfNeeded(data);
 
             // Action
-            app.Groups.CreateBeforeRemoveIfNeeded(5);
-
-            // Verification
+            app.Groups.Remove(1);
             
+            // Verification
+            Assert.IsFalse(app.Groups.CurrentGroupExist(1));
         }
     }
 }
