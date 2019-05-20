@@ -52,6 +52,7 @@ namespace WebAddressbookTests
         public GroupHelper SubmitGroupCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
+            groupCache = null;
             return this;
         }
         public GroupHelper FillGroupForm(GroupData group)
@@ -64,20 +65,21 @@ namespace WebAddressbookTests
         public GroupHelper RemoveGroup()
         {
             driver.FindElement(By.Name("delete")).Click();
+            groupCache = null;
             return this;
         }
 
         public GroupHelper SelectGroup(int index)
         {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]")).Click();
             return this;
         }
         public GroupHelper SubmitGroupModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            groupCache = null;
             return this;
         }
-
         public GroupHelper InitGroupModification()
         {
             driver.FindElement(By.Name("edit")).Click();
@@ -85,7 +87,7 @@ namespace WebAddressbookTests
         }
         public bool CurrentGroupExist(int index)
         {
-            return IsElementPresent(By.XPath("(//input[@name='selected[]'])[" + index + "]"));
+            return IsElementPresent(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]"));
         }
         public void CreateIfNeeded(GroupData group)
         {
@@ -94,7 +96,6 @@ namespace WebAddressbookTests
                 Create(group);
             }
         }
-        
         public bool AssertGroupFields(GroupData group)
         {
             return driver.FindElement(By.Name("group_name")).GetAttribute("value")
@@ -110,17 +111,27 @@ namespace WebAddressbookTests
             InitGroupModification();
             Assert.IsTrue(AssertGroupFields(group));
         }
-
-        //public void CheckAndCreateBeforeAction(int index)
-        //{
-        //    if(!CurrentGroupExist(index))
-        //    {
-        //        while(driver.FindElements(By.XPath("//input[@name='selected[]']")).Count < index)
-        //         {
-        //            GroupData group = new GroupData("abc");
-        //            Create(group);
-        //         }
-        //    }
-        //}
+        // Cache for groups list and fill list with needed elements
+        private List<GroupData> groupCache = null;
+        public List<GroupData> GetGroupList()
+        {
+            if (groupCache == null)
+            {
+                groupCache = new List<GroupData>();
+                manager.Navigator.GoToGroupsPage();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+                foreach (IWebElement element in elements)
+                {
+                    groupCache.Add(new GroupData(element.Text) {
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                    });
+                }
+            }
+            return  new List<GroupData>(groupCache);
+        }
+        public int GetGroupCount()
+        {
+            return driver.FindElements(By.CssSelector("span.group")).Count;
+        }
     }
 }

@@ -104,12 +104,14 @@ namespace WebAddressbookTests
         public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.XPath("(//input[@name='submit'])[2]")).Click();
+            contactCache = null;
             return this;
         }
 
         public ContactHelper SumbitContactRemove()
         {
             driver.SwitchTo().Alert().Accept();
+            contactCache = null;
             return this;
         }
         public ContactHelper RemoveContact()
@@ -120,32 +122,32 @@ namespace WebAddressbookTests
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            contactCache = null;
             return this;
         }
 
         public ContactHelper InitContactModification(int index)
         {
-            driver.FindElement(By.XPath("(//img[@alt='Edit'])[" + index + "]")).Click();
+            driver.FindElement(By.XPath("(//img[@alt='Edit'])[" + (index + 1) + "]")).Click();
             return this;
         }
 
-        public ContactHelper SelectContact(int index1)
+        public ContactHelper SelectContact(int index)
         {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index1 + "]")).Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]")).Click();
             return this;
         }
-        public bool CurrentContactExist(int index1)
+        public bool CurrentContactExist(int index)
         {
-            return IsElementPresent(By.XPath("(//input[@name='selected[]'])[" + index1 + "]"));
+            return IsElementPresent(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]"));
         }
         public void CreateIfNeeded(ContactData contact)
         {
-            if (!CurrentContactExist(1))
+            if (!CurrentContactExist(0))
             {
                 Create(contact);
             }
         }
-
         public bool AssertContactFields(ContactData contact)
         {
             return driver.FindElement(By.Name("firstname")).GetAttribute("value") == contact.Firstname
@@ -156,17 +158,31 @@ namespace WebAddressbookTests
             InitContactModification(index);
             Assert.IsTrue(AssertContactFields(contact));
         }
+        // Cache for groups list and fill list with needed elements
+        private List<ContactData> contactCache = null;
+        public List<ContactData> GetContactList()
+        {
+            if (contactCache == null)
+            {
+                contactCache = new List<ContactData>();
+                manager.Navigator.GoToHomePage();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr[name='entry']"));
+                foreach (IWebElement element in elements)
+                {
+                    var lastname = element.FindElement(By.XPath("//tr[@name='entry']/td[2]"));
+                    var firstname = element.FindElement(By.XPath("//tr[@name='entry']/td[3]"));
 
-        //public void CheckAndCreateBeforeAction(int index)
-        //{
-        //    if(!CurrentContactExist(index))
-        //    {
-        //        while(driver.FindElements(By.XPath("(//img[@alt='Edit']")).Count < index)
-        //         {
-        //            ContactData contact = new ContactData("abc");
-        //            Create(contact);
-        //         }
-        //    }
-        //}
+                    contactCache.Add(new ContactData(firstname.Text, lastname.Text)
+                    {
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                    });
+                }
+            }
+            return new List<ContactData>(contactCache);
+        }
+        public int GetContactCount()
+        {
+            return driver.FindElements(By.CssSelector("tr[name='entry']")).Count;
+        }
     }
 }

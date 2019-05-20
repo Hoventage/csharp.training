@@ -18,13 +18,31 @@ namespace WebAddressbookTests
             app.Navigator.GoToHomePage();
             app.Contacts.CreateIfNeeded(contact);
 
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            ContactData oldData = oldContacts[0];
+
             // Actions
             ContactData newData = new ContactData("FirstLine");
             newData.Lastname = "LastLine";
-            app.Contacts.Modify(1, newData);
+            app.Contacts.Modify(0, newData);
 
             // Verification
-            app.Contacts.AssertContactFields(1, newData);
+            Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactList());
+
+            List<ContactData> newContacts = app.Contacts.GetContactList();
+            oldContacts[0].Firstname = contact.Firstname;
+            oldContacts.Sort();
+            newContacts.Sort();
+            Assert.AreEqual(oldContacts, newContacts);
+
+            foreach (ContactData item in newContacts)
+            {
+                if (item.Id == oldData.Id)
+                {
+                    Assert.AreEqual(contact.Firstname, item.Firstname);
+
+                }
+            }
         }
     }
 }
