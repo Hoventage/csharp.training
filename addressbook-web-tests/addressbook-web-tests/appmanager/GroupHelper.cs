@@ -91,7 +91,7 @@ namespace WebAddressbookTests
         }
         public void CreateIfNeeded(GroupData group)
         {
-            if (!CurrentGroupExist(1))
+            if (!CurrentGroupExist(0))
             {
                 Create(group);
             }

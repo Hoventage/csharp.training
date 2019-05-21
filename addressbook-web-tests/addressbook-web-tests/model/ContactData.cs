@@ -30,17 +30,14 @@ namespace WebAddressbookTests
             return Firstname == other.Firstname
             && Lastname == other.Lastname;
         }
-        // ^ - это ок? :)
         public override int GetHashCode()
         {
             return Firstname.GetHashCode() ^ Lastname.GetHashCode();
         }
-        // Sure?
         public override string ToString()
         {
-            return "firstname =" + Firstname + "lastname =" + Lastname;
+            return "firstname =" + Firstname + " lastname =" + Lastname;
         }
-        // ^ - это ок? :)
         public int CompareTo(ContactData other)
         {
             var str1 = string.Concat(other.Firstname, other.Lastname);

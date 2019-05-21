@@ -27,10 +27,11 @@ namespace WebAddressbookTests
             app.Contacts.Modify(0, newData);
 
             // Verification
-            Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactList());
+            Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactCount());
 
             List<ContactData> newContacts = app.Contacts.GetContactList();
-            oldContacts[0].Firstname = contact.Firstname;
+            oldContacts[0].Firstname = newData.Firstname;
+            oldContacts[0].Lastname = newData.Lastname;
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);
@@ -39,8 +40,8 @@ namespace WebAddressbookTests
             {
                 if (item.Id == oldData.Id)
                 {
-                    Assert.AreEqual(contact.Firstname, item.Firstname);
-
+                    Assert.AreEqual(newData.Firstname, item.Firstname);
+                    Assert.AreEqual(newData.Lastname, item.Lastname);
                 }
             }
         }
