@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
 
@@ -23,7 +23,8 @@ namespace WebAddressbookTests
 
         private ApplicationManager()
         {
-            driver = new FirefoxDriver();
+            driver = new ChromeDriver();
+            driver.Manage().Window.Maximize();
             baseURL = "http://localhost:8080/addressbook";
             loginHelper = new LoginHelper(this);
             navigator = new NavigationHelper(this, baseURL);

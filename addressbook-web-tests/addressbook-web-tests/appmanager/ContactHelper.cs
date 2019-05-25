@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
@@ -43,7 +38,6 @@ namespace WebAddressbookTests
             manager.Navigator.GoToHomePage();
             return this;
         }
-        
         public ContactHelper FillNewContactFields(ContactData contact)
         {
             Type(By.Name("firstname"), contact.Firstname);
@@ -58,11 +52,11 @@ namespace WebAddressbookTests
             //driver.FindElement(By.Name("address")).Clear();
             //driver.FindElement(By.Name("address")).SendKeys(contact.Address);
             //driver.FindElement(By.Name("home")).Clear();
-            //driver.FindElement(By.Name("home")).SendKeys(contact.Home);
+            //driver.FindElement(By.Name("home")).SendKeys(contact.HomePhone);
             //driver.FindElement(By.Name("mobile")).Clear();
-            //driver.FindElement(By.Name("mobile")).SendKeys(contact.Mobile);
+            //driver.FindElement(By.Name("mobile")).SendKeys(contact.MobilePhone);
             //driver.FindElement(By.Name("work")).Clear();
-            //driver.FindElement(By.Name("work")).SendKeys(contact.Work);
+            //driver.FindElement(By.Name("work")).SendKeys(contact.WorkPhone);
             //driver.FindElement(By.Name("fax")).Clear();
             //driver.FindElement(By.Name("fax")).SendKeys(contact.Fax);
             //driver.FindElement(By.Name("email")).Clear();
@@ -126,20 +120,20 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper InitContactModification(int index)
-        {
-            driver.FindElement(By.XPath("(//img[@alt='Edit'])[" + (index + 1) + "]")).Click();
-            return this;
-        }
+        //public ContactHelper InitContactModification(int index)
+        //{
+        //    driver.FindElement(By.XPath("(//img[@alt='Edit'])[" + (index + 1) + "]")).Click();
+        //    return this;
+        //}
 
         public ContactHelper SelectContact(int index)
         {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]")).Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]")).Click();
             return this;
         }
         public bool CurrentContactExist(int index)
         {
-            return IsElementPresent(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]"));
+            return IsElementPresent(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]"));
         }
         public void CreateIfNeeded(ContactData contact)
         {
@@ -160,6 +154,8 @@ namespace WebAddressbookTests
         }
         // Cache for groups list and fill list with needed elements
         private List<ContactData> contactCache = null;
+
+        // Поработать с CSS, XPath. Рассмотреть данный метод еще раз
         public List<ContactData> GetContactList()
         {
             if (contactCache == null)
@@ -183,6 +179,70 @@ namespace WebAddressbookTests
         public int GetContactCount()
         {
             return driver.FindElements(By.CssSelector("tr[name='entry']")).Count;
+        }
+
+
+        public ContactData GetContactInformationFromEditForm(int index)
+        {
+            manager.Navigator.GoToHomePage();
+            InitContactModification(index);
+            string firstname = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            string lastname = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string address = driver.FindElement(By.Name("address")).GetAttribute("value");
+            string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
+            string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+            string eMail = driver.FindElement(By.Name("email")).GetAttribute("value");
+            string eMail2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
+            string eMail3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
+
+            return new ContactData(firstname, lastname)
+            {
+            Address = address,
+            HomePhone = homePhone,
+            MobilePhone = mobilePhone,
+            WorkPhone = workPhone,
+            Email = eMail,
+            Email2 = eMail2,
+            Email3 = eMail3
+            };
+        }
+        public void InitContactModification(int index)
+        {
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"))[7]
+                .FindElement(By.TagName("a")).Click();
+        }
+        public ContactData GetContactInformationFromTable(int index)
+        {
+            manager.Navigator.GoToHomePage();
+            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"));
+            string lastname = cells[1].Text;
+            string firstname = cells[2].Text;
+            string address = cells[3].Text;
+            string allMails = cells[4].Text;
+            string allPhones = cells[5].Text;
+
+            return new ContactData(firstname, lastname)
+            {
+                Address = address,
+                AllPhones = allPhones,
+                AllMails = allMails
+            };
+        }
+        public void ViewContact(int index)
+        {
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"))[6]
+                .FindElement(By.TagName("a")).Click();
+        }
+        public int GetNumberOfSearchResults()
+        {
+            manager.Navigator.GoToHomePage();
+            string text = driver.FindElement(By.TagName("label")).Text;
+            Match m = new Regex(@"\d+").Match(text);
+            return Int32.Parse(m.Value); 
         }
     }
 }
