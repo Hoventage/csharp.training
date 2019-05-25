@@ -244,5 +244,10 @@ namespace WebAddressbookTests
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value); 
         }
+        // Метод с локатором для поля "поиск"
+
+        // Метод для ввода значения в поле "поиск"
+
+        // Метод для определения количества контактов на странице
     }
 }

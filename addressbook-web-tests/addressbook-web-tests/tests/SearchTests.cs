@@ -19,6 +19,7 @@ namespace WebAddressbookTests
             System.Console.Out.Write(app.Contacts.GetNumberOfSearchResults());
 
             // Verification
+            
         }
     }
 }
