@@ -16,10 +16,13 @@ namespace WebAddressbookTests
         [Test]
         public void SearchTest()
         {
-            System.Console.Out.Write(app.Contacts.GetNumberOfSearchResults());
+            app.Contacts.ContactSearchField("s");
+            app.Contacts.GetNumberOfSearchResults();
+            app.Contacts.GetDisplayedContacts();
+            //System.Console.Out.Write(app.Contacts.GetNumberOfSearchResults());
 
             // Verification
-            
+            Assert.AreEqual(app.Contacts.GetDisplayedContacts(), app.Contacts.GetNumberOfSearchResults());
         }
     }
 }

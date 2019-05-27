@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -180,8 +181,6 @@ namespace WebAddressbookTests
         {
             return driver.FindElements(By.CssSelector("tr[name='entry']")).Count;
         }
-
-
         public ContactData GetContactInformationFromEditForm(int index)
         {
             manager.Navigator.GoToHomePage();
@@ -231,6 +230,17 @@ namespace WebAddressbookTests
                 AllMails = allMails
             };
         }
+        public ContactData GetContactInformationFromDetails(int index)
+        {
+            manager.Navigator.GoToHomePage();
+            ViewContact(index);
+            string allInfo = driver.FindElement(By.CssSelector("div[id='content']")).Text;
+            
+            return new ContactData(allInfo)
+            {
+                AllInfo = allInfo
+            };
+        }
         public void ViewContact(int index)
         {
             driver.FindElements(By.Name("entry"))[index]
@@ -239,15 +249,43 @@ namespace WebAddressbookTests
         }
         public int GetNumberOfSearchResults()
         {
-            manager.Navigator.GoToHomePage();
+            //manager.Navigator.GoToHomePage();
             string text = driver.FindElement(By.TagName("label")).Text;
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value); 
         }
-        // Метод с локатором для поля "поиск"
-
-        // Метод для ввода значения в поле "поиск"
-
-        // Метод для определения количества контактов на странице
+        // Ищем поиск, вводим текст
+        public void ContactSearchField(string text)
+        {
+            manager.Navigator.GoToHomePage();
+            Type(By.Name("searchstring"), text);
+        }
+        //public int GetDetailsButtonsCount()
+        //{
+        //    int trulyCount = 0;
+        //    ICollection<IWebElement> elements = driver.FindElements(By.TagName("img"));
+        //    foreach (IWebElement element in elements)
+        //    {
+        //        if (element.Displayed)
+        //        {
+        //            trulyCount++;
+        //        }
+        //    }
+        //    int realCount = (trulyCount - 1) / 3;
+        //    return realCount;
+        //}
+        public int GetDisplayedContacts()
+        {
+            int trulyCount = 0;
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr[name='entry']"));
+            foreach (IWebElement element in elements)
+            {
+                if (element.Displayed)
+                {
+                    trulyCount++;
+                }
+            }
+            return trulyCount;
+        }
     }
 }
