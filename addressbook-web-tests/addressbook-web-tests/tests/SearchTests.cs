@@ -17,8 +17,8 @@ namespace WebAddressbookTests
         public void SearchTest()
         {
             app.Contacts.ContactSearchField("s");
-            app.Contacts.GetNumberOfSearchResults();
-            app.Contacts.GetDisplayedContacts();
+            //app.Contacts.GetNumberOfSearchResults();
+            //app.Contacts.GetDisplayedContacts();
             //System.Console.Out.Write(app.Contacts.GetNumberOfSearchResults());
 
             // Verification

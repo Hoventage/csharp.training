@@ -96,7 +96,6 @@ namespace WebAddressbookTests
                 allPhones = value;
             }
         }
-
         public string CleanUp(string phone)
         {
             if (phone == null || phone == "")
@@ -105,7 +104,6 @@ namespace WebAddressbookTests
             }
             return Regex.Replace(phone, "[ -()]", "") + "\r\n";
         }
-
         public string AllMails
         {
             get
@@ -116,7 +114,7 @@ namespace WebAddressbookTests
                 }
                 else
                 {
-                    return (Email + "\r\n" + Email2 + "\r\n" + Email3).Trim();
+                    return CorrectBreakMail(Email) + CorrectBreakMail(Email2) + CorrectBreakMail(Email3).Trim();
                 }
             }
             set
@@ -124,7 +122,19 @@ namespace WebAddressbookTests
                 allMails = value;
             }
         }
-        public string AllInfo
+        // Корректный перенос строки с емейлом
+        private string CorrectBreakMail(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return "";
+            }
+            else
+            {
+                return str + "\r\n";
+            }
+        }
+        public string AllInfoFromDetails
         {
             get
             {
@@ -134,8 +144,55 @@ namespace WebAddressbookTests
                 }
                 else
                 {
-                    return (Firstname + " " + Lastname + "\r\n" + Address + "\r\n" + "" + "\r\n" + "H: " + HomePhone +
-                        "\r\n" + "M: " + MobilePhone + "\r\n" + "W: " + WorkPhone + "\r\n" + "" + "\r\n" + Email + "\r\n" + Email2 + "\r\n" + Email3).Trim();
+                    string resultAllText = "";
+
+                    string FIO = "";
+
+                    if (!string.IsNullOrEmpty(Firstname))
+                    {
+                        FIO += Firstname;
+                    }
+                    if (!string.IsNullOrEmpty(Lastname))
+                    {
+                        FIO += Lastname;
+                    }
+                    if (!string.IsNullOrEmpty(FIO))
+                    {
+                        resultAllText += FIO + "\r\n";
+                    }
+                    if (!string.IsNullOrEmpty(Address))
+                    {
+                        resultAllText += Address + "\r\n";
+                    }
+                    resultAllText += "\r\n";
+                    if (!string.IsNullOrEmpty(HomePhone))
+                    {
+                        resultAllText += "H: " + HomePhone + "\r\n";
+                    }
+                    if (!string.IsNullOrEmpty(MobilePhone))
+                    {
+                        resultAllText += "M: " + MobilePhone + "\r\n";
+                    }
+                    if (!string.IsNullOrEmpty(WorkPhone))
+                    {
+                        resultAllText += "W: " + WorkPhone + "\r\n";
+                    }
+                    resultAllText += "\r\n";
+                    if (!string.IsNullOrEmpty(Email))
+                    {
+                        resultAllText += Email + "\r\n";
+                    }
+                    if (!string.IsNullOrEmpty(Email2))
+                    {
+                        resultAllText += Email2 + "\r\n";
+                    }
+                    if (!string.IsNullOrEmpty(Email3))
+                    {
+                        resultAllText += Email3 + "\r\n";
+                    }
+                    resultAllText += "\r\n";
+
+                    return resultAllText.Trim('\r', '\n');
                 }
             }
             set

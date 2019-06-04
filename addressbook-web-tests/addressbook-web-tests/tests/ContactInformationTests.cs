@@ -33,7 +33,7 @@ namespace WebAddressbookTests
 
             // Verification
             //Assert.AreEqual(fromDetails, fromForm);
-            Assert.AreEqual(fromDetails.AllInfo, fromForm.AllInfo);
+            Assert.AreEqual(fromDetails.AllInfoFromDetails, fromForm.AllInfoFromDetails);
         }
     }
 }

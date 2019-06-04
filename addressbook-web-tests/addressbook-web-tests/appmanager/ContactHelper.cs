@@ -238,7 +238,7 @@ namespace WebAddressbookTests
             
             return new ContactData(allInfo)
             {
-                AllInfo = allInfo
+                AllInfoFromDetails = allInfo
             };
         }
         public void ViewContact(int index)
@@ -254,7 +254,7 @@ namespace WebAddressbookTests
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value); 
         }
-        // Ищем поиск, вводим текст
+        // Ищем поле "поиск", вводим текст
         public void ContactSearchField(string text)
         {
             manager.Navigator.GoToHomePage();
@@ -287,5 +287,9 @@ namespace WebAddressbookTests
             }
             return trulyCount;
         }
+        //public int GetDisplayedElements()
+        //{
+        //    return driver.FindElements(By.XPath("//tr[@name='entry'][@style!='display: none;']")).Count;
+        //}
     }
 }
