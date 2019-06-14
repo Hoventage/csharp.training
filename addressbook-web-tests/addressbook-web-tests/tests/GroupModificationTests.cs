@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupModificationTests : AuthTestBase
+    public class GroupModificationTests : GroupTestBase
     {
         [Test]
         public void GroupModificationTest()
@@ -22,18 +22,18 @@ namespace WebAddressbookTests
             app.Navigator.GoToGroupsPage();
             app.Groups.CreateIfNeeded(data);
 
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
             GroupData oldData = oldGroups[0];
 
             // Action
             GroupData newData = new GroupData("qwerty7");
             newData.Header = "Header";
             newData.Footer = "Footer";
-            app.Groups.Modify(0, newData);
+            app.Groups.ModifyById(oldData, newData);
 
             Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
 
-            List<GroupData> newGroups = app.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAll();
             oldGroups[0].Name = newData.Name;
             oldGroups.Sort();
             newGroups.Sort();
@@ -44,7 +44,6 @@ namespace WebAddressbookTests
                 if (group.Id == oldData.Id)
                 {
                     Assert.AreEqual(newData.Name, group.Name);
-
                 }
             }
 

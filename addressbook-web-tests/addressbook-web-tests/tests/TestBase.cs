@@ -10,6 +10,9 @@ namespace WebAddressbookTests
     public class TestBase
     {
         protected ApplicationManager app;
+        //Для следующей константы можно указать false, в этом случае проверка из
+        //GroupTestBase реализована не будет, тесты пройдут быстрее, но упадет надежность
+        public static bool PERFORM_LONG_UI_CHECKS = true;
 
         [SetUp]
         public void SetupApplicationManager()

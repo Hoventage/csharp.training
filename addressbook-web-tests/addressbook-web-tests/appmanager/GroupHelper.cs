@@ -24,10 +24,28 @@ namespace WebAddressbookTests
             manager.Navigator.GoToGroupsPage();
             return this;
         }
+        public GroupHelper Remove(GroupData group)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroup(group.Id);
+            RemoveGroup();
+            manager.Navigator.GoToGroupsPage();
+            return this;
+        }
         public GroupHelper Modify(int p, GroupData newData)
         {
             manager.Navigator.GoToGroupsPage();
             SelectGroup(p);
+            InitGroupModification();
+            FillGroupForm(newData);
+            SubmitGroupModification();
+            manager.Navigator.GoToGroupsPage();
+            return this;
+        }
+        public GroupHelper ModifyById(GroupData oldData, GroupData newData)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroup(oldData.Id);
             InitGroupModification();
             FillGroupForm(newData);
             SubmitGroupModification();
@@ -74,6 +92,11 @@ namespace WebAddressbookTests
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]")).Click();
             return this;
         }
+        public GroupHelper SelectGroup(string id)
+        {
+            driver.FindElement(By.XPath("(//input[@name='selected[]' and @value='"+id+"'])")).Click();
+            return this;
+        }
         public GroupHelper SubmitGroupModification()
         {
             driver.FindElement(By.Name("update")).Click();
@@ -89,9 +112,13 @@ namespace WebAddressbookTests
         {
             return IsElementPresent(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]"));
         }
+        public bool CurrentGroupExistById(string id)
+        {
+            return IsElementPresent(By.XPath("(//input[@name='selected[]' and @value='" + id + "'])"));
+        }
         public void CreateIfNeeded(GroupData group)
         {
-            if (!CurrentGroupExist(0))
+            if (!CurrentGroupExistById(group.Id))
             {
                 Create(group);
             }
