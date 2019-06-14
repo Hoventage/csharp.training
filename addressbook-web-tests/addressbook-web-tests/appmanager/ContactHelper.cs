@@ -71,6 +71,7 @@ namespace WebAddressbookTests
 
         private void SelectContact(string contactId)
         {
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
             driver.FindElement(By.Id(contactId)).Click();
         }
 
@@ -111,9 +112,9 @@ namespace WebAddressbookTests
         }
         public ContactHelper FillNewContactFields(ContactData contact)
         {
-            Type(By.Name("firstname"), contact.Firstname);
-            Type(By.Name("middlename"), contact.Middlename);
-            Type(By.Name("lastname"), contact.Lastname);
+            Type(By.Name("firstname"), contact.Firstname);//.Trim());
+            Type(By.Name("middlename"), contact.Middlename);//.Trim());
+            Type(By.Name("lastname"), contact.Lastname);//.Trim());
             //driver.FindElement(By.Name("nickname")).Clear();
             //driver.FindElement(By.Name("nickname")).SendKeys(contact.Nickname);
             //driver.FindElement(By.Name("title")).Clear();
