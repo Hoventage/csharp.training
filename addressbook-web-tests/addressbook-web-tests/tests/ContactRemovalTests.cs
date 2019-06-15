@@ -19,7 +19,7 @@ namespace WebAddressbookTests
             // Preparation
             ContactData contact = new ContactData("test");
             app.Navigator.GoToHomePage();
-            app.Contacts.CreateIfNeeded(contact);
+            app.Contacts.CreateIfNeeded(0, contact);
 
             List<ContactData> oldContacts = ContactData.GetAll();
             ContactData toBeRemoved = oldContacts[0];

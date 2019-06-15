@@ -116,9 +116,9 @@ namespace WebAddressbookTests
         {
             return IsElementPresent(By.XPath("(//input[@name='selected[]' and @value='" + id + "'])"));
         }
-        public void CreateIfNeeded(GroupData group)
+        public void CreateIfNeeded(int index, GroupData group)
         {
-            if (!CurrentGroupExistById(group.Id))
+            if (!CurrentGroupExist(0))
             {
                 Create(group);
             }

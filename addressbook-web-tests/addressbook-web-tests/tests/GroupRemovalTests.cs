@@ -19,7 +19,7 @@ namespace WebAddressbookTests
             // Preparation
             GroupData data = new GroupData("123456");
             app.Navigator.GoToGroupsPage();
-            app.Groups.CreateIfNeeded(data);
+            app.Groups.CreateIfNeeded(0, data);
 
             List<GroupData> oldGroups = GroupData.GetAll();
             GroupData toBeRemoved = oldGroups[0];

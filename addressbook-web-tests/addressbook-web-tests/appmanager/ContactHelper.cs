@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WebAddressbookTests
 {
@@ -71,7 +73,7 @@ namespace WebAddressbookTests
 
         private void SelectContact(string contactId)
         {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
             driver.FindElement(By.Id(contactId)).Click();
         }
 
@@ -225,9 +227,9 @@ namespace WebAddressbookTests
         {
             return IsElementPresent(By.XPath("(//input[@name='selected[]' and @value='" + id + "'])"));
         }
-        public void CreateIfNeeded(ContactData contact)
+        public void CreateIfNeeded(int index, ContactData contact)
         {
-            if (!CurrentContactExistById(contact.Id))
+            if (!CurrentContactExist(0))
             {
                 Create(contact);
             }
@@ -375,5 +377,21 @@ namespace WebAddressbookTests
         //{
         //    return driver.FindElements(By.XPath("//tr[@name='entry'][@style!='display: none;']")).Count;
         //}
+        public void CheckContactWithoutGroupExist(ContactData contact, ContactData contactData)
+        {
+            if (contact == null)
+            {
+                Create(contactData);
+            }
+        }
+
+        public void CheckContactInGroupExist(ContactData contactToBeRemoved, List<ContactData> oldList, GroupData group)
+        {
+            if (contactToBeRemoved == null)
+            {
+                ContactData contact = ContactData.GetAll().First();
+                AddContactToGroup(contact, group);
+            }
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace WebAddressbookTests
             // Preparation
             ContactData contact = new ContactData("qwerty7");
             app.Navigator.GoToHomePage();
-            app.Contacts.CreateIfNeeded(contact);
+            app.Contacts.CreateIfNeeded(0, contact);
 
             List<ContactData> oldContacts = ContactData.GetAll();
             ContactData oldData = oldContacts[0];
