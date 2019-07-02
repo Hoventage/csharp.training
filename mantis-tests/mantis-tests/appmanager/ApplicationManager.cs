@@ -19,8 +19,11 @@ namespace mantis_tests
         public RegistrationHelper Registration { get; }
         public FtpHelper Ftp { get; }
         public ManagementMenuHelper Menu { get; }
+        public AdminHelper Admin { get; }
         public LoginHelper LoginHelper { get; }
         public ProjectManagementHelper Project { get; }
+        public JamesHelper James { get; }
+        public APIHelper API { get; }
 
         private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
@@ -34,6 +37,9 @@ namespace mantis_tests
             LoginHelper = new LoginHelper(this);
             Project = new ProjectManagementHelper(this);
             Menu = new ManagementMenuHelper(this, baseURL);
+            Admin = new AdminHelper(this, baseURL);
+            James = new JamesHelper(this);
+            API = new APIHelper(this);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
         }
         ~ApplicationManager()
@@ -82,7 +88,7 @@ namespace mantis_tests
             if (! app.IsValueCreated)
             {
                 ApplicationManager newInstance = new ApplicationManager();
-                newInstance.driver.Url = "http://localhost:8080/mantisbt-2.21.1/login_page.php";
+                newInstance.driver.Url = newInstance.baseURL + "/login_page.php";
                 app.Value = newInstance;
             }
             return app.Value;

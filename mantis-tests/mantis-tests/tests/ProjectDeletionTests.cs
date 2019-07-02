@@ -21,28 +21,29 @@ namespace mantis_tests
         }
 
 
-        [Test, TestCaseSource("RandomContactDataProvider")]
-        public void TestProjectDeletion(ProjectData project)
+        [Test]
+        public void TestProjectDeletion()
         {
             //preparation
-            List<ProjectData> oldProjects = app.Project.GetProjectList();
+            AccountData account = new AccountData("administrator", "root") { };
+            ProjectData project = new ProjectData(GenerateRandomString(10));
+            Mantis.ProjectData [] oldProjects = app.API.GetProjectsThroughAPI(account, project);
             if (oldProjects == null)
             {
-                app.Project.Create(project);
-                oldProjects = app.Project.GetProjectList();
+                app.API.CreateProjectThroughAPI(account, project);
             }
 
             //action
             app.Project.Delete(0);
 
             //verification
-            Assert.AreEqual(oldProjects.Count - 1, app.Project.GetProjectCount());
-            List<ProjectData> newProjects = app.Project.GetProjectList();
-            oldProjects.RemoveAt(0);
-            oldProjects.Sort();
-            newProjects.Sort();
-            
-            Assert.AreEqual(oldProjects.Count, newProjects.Count);
+            Assert.AreEqual(oldProjects.Length - 1, app.Project.GetProjectCount());
+            Mantis.ProjectData[] newProjects = app.API.GetProjectsThroughAPI(account, project);
+
+            //oldProjects.RemoveAt(0);
+            //oldProjects.Sort();
+            //newProjects.Sort();
+            Assert.AreEqual(oldProjects.Length - 1, newProjects.Length);
         }
     }
 }

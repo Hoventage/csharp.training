@@ -20,8 +20,14 @@ namespace mantis_tests
             this.Username = username;
             this.Password = password;
         }
+
+        public AccountData()
+        {
+        }
+
         public string Username { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        public string Id { get; internal set; }
     }
 }
