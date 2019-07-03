@@ -17,6 +17,11 @@ namespace mantis_tests
             this.Name = name;
         }
 
+        public ProjectData(string name, string id) : this(name)
+        {
+            Id = id;
+        }
+
         public string Name { get; set; }
         public string Id { get; set; }
 

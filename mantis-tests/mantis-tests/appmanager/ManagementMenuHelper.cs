@@ -88,8 +88,8 @@ namespace mantis_tests
             {
                 return;
             }
-            //driver.Navigate().GoToUrl("http://localhost:8080/mantisbt-2.21.1/manage_proj_page.php");
-            driver.FindElement(By.XPath("//a[contains(text(),'Управление проектами')]")).Click();
+            driver.Navigate().GoToUrl("http://localhost:8080/mantisbt-2.21.1/manage_proj_page.php");
+            //driver.FindElement(By.XPath("//a[contains(text(),'Управление проектами')]")).Click();
         }
     }
 }
