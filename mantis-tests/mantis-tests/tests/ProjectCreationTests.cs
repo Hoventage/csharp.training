@@ -26,14 +26,14 @@ namespace mantis_tests
         {
             //preparation
             AccountData account = new AccountData("administrator", "root") { };
-            List<ProjectData> oldProjects = app.API.GetProjectsThroughAPI(account, project);
+            List<ProjectData> oldProjects = app.API.GetProjectsThroughAPI(account);
 
             //action
             app.Project.Create(project);
 
             //verification
             Assert.AreEqual(oldProjects.Count + 1, app.Project.GetProjectCount());
-            List<ProjectData> newProjects = app.API.GetProjectsThroughAPI(account, project);
+            List<ProjectData> newProjects = app.API.GetProjectsThroughAPI(account);
 
             oldProjects.Add(project);
             oldProjects.Sort();
